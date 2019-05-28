@@ -1,0 +1,8 @@
+version: '3.3'
+
+services:
+  piper:
+    image: piper
+    build: .
+    ports:
+      - 3000:3000
