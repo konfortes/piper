@@ -1,5 +1,5 @@
 {
-  "name": "node-boilerplate",
+  "name": "piper",
   "version": "0.1.0",
   "description": "node service boilerplate",
   "main": "dist",
