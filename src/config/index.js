@@ -36,6 +36,18 @@ const config = convict({
         default: '',
         env: 'TRELLO_API_TOKEN'
       }
+    },
+    telegram: {
+      token: {
+        doc: 'the bot API token',
+        default: '',
+        env: 'TELEGRAM_TOKEN'
+      },
+      webhookUrl: {
+        doc: 'the url for webhooks',
+        default: 'https://d165441d.ngrok.io/telegram/webhook',
+        env: 'TELEGRAM_WEBHOOK_URL'
+      }
     }
   }
 });

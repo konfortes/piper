@@ -6,7 +6,7 @@ import errorHandler, { notFoundHandler } from '../utils/error-handler';
 
 import { requestIdPlugin } from './plugins/requestid-plugin';
 import { getSharedSchemas } from './schemas/shared';
-import { rootRoutes, trelloRoutes } from './routes';
+import { rootRoutes, trelloRoutes, telegramRoutes } from './routes';
 
 const app = Fastify({
   logger
@@ -27,5 +27,6 @@ app.setErrorHandler(errorHandler);
 // Register routes
 app.register(rootRoutes);
 app.register(trelloRoutes);
+app.register(telegramRoutes);
 
 export default app;

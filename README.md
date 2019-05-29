@@ -21,6 +21,28 @@ https://api.trello.com/1/tokens/{APIToken}/webhooks/ \
 }'
 ```
 
-- to see APIKey browse [http://trello.com/app-key](http://trello.com/app-key).
+- your AppKey can be found on [http://trello.com/app-key](http://trello.com/app-key).
 - using the APIKey you can get APIToken: browse [https://trello.com/1/authorize?expiration=1day&name=MyPersonalToken&scope=read&response_type=token&key={YourAPIKey}](https://trello.com/1/authorize?expiration=1day&name=MyPersonalToken&scope=read&response_type=token&key={YourAPIKey})
 - to find board url browse to the board and add .json at the end.
+- set token on you ENV to authorize signature.
+
+### Telegram
+
+- create a bot through BotFather
+- use the token to register webhook:
+
+```bash
+TOKEN=<YOUR_TOKEN>
+curl https://api.telegram.org/bot$TOKEN/setWebhook\?url\=https://99e80dc0.ngrok.io/telegram/webhook
+```
+
+- set token in your ENV
+- create ssl certificate:
+
+```bash
+# Our private cert will be key.pem, keep this file private
+$ openssl genrsa -out certs/key.pem 2048
+
+# Our public certificate will be crt.pem
+$ openssl req -new -sha256 -key certs/key.pem -out certs/crt.pem
+```
