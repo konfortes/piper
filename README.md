@@ -22,9 +22,15 @@ https://api.trello.com/1/tokens/{APIToken}/webhooks/ \
 ```
 
 - your AppKey can be found on [http://trello.com/app-key](http://trello.com/app-key).
-- using the AppKey you can get APIToken: browse [https://trello.com/1/authorize?expiration=1day&name=MyPersonalToken&scope=read&response_type=token&key={YourAppKey}](https://trello.com/1/authorize?expiration=1day&name=MyPersonalToken&scope=read&response_type=token&key={YourAppKey})
+- using the AppKey you can get APIToken: browse [Authorize](https://trello.com/1/authorize?expiration=7day&name=PiperToken&scope=read,write&response_type=token&key={YourAppKey})
 - to find board url browse to the board and add .json at the end.
 - set token on you ENV to authorize signature.
+- debugging webhooks curls:
+
+```bash
+curl https://api.trello.com/1/tokens/$TOKEN/webhooks\?key\=56e1506799c97dea920f7229c75c6c39
+curl -XDELETE https://api.trello.com/1/tokens/$TOKEN/webhooks/5cf01a9c2f0d3c889d2651e0\?key\=56e1506799c97dea920f7229c75c6c39
+```
 
 ### Telegram
 
