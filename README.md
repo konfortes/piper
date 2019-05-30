@@ -47,3 +47,7 @@ $ openssl genrsa -out certs/key.pem 2048
 # Our public certificate will be crt.pem
 $ openssl req -new -sha256 -key certs/key.pem -out certs/crt.pem
 ```
+
+### Troubleshooting
+
+- webhooks refuses to be received - revoke token!
