@@ -18,6 +18,11 @@ const config = convict({
     env: 'PORT',
     arg: 'port'
   },
+  publicUrl: {
+    doc: 'a url which is publicly accessible',
+    default: '',
+    env: 'PUBLIC_URL'
+  },
   logLevel: {
     doc: 'The default logger log level',
     format: ['fatal', 'error', 'warn', 'info', 'debug', 'trace', 'silent'],
@@ -26,10 +31,10 @@ const config = convict({
   },
   services: {
     trello: {
-      apiKey: {
+      appKey: {
         doc: 'api key for your trello app',
         default: '',
-        env: 'TRELLO_API_KEY'
+        env: 'TRELLO_APP_KEY'
       },
       apiToken: {
         doc: 'api access token',
@@ -42,11 +47,6 @@ const config = convict({
         doc: 'the bot API token',
         default: '',
         env: 'TELEGRAM_TOKEN'
-      },
-      webhookUrl: {
-        doc: 'the url for webhooks',
-        default: 'https://d165441d.ngrok.io/telegram/webhook',
-        env: 'TELEGRAM_WEBHOOK_URL'
       }
     }
   }
