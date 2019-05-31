@@ -1,5 +1,5 @@
+import trello from './../../services/trello';
 import logger from '../../utils/logger';
-import telegramBot from '../../services/telegram-bot';
 
 export const trelloHookSchema = {
   response: {
@@ -20,14 +20,11 @@ export const trelloHookSchema = {
 };
 
 export const trelloHookHandler = async request => {
+  // TODO: remove
   logger.info('webhook payload: ' + JSON.stringify(request.body, null, 4));
-  const action = request.body.action;
-  if (action.type === 'createCard') {
-    const chatId = '616941509,';
-    const cardName = action.data.card.name;
-    telegramBot.sendMessage(chatId, 'new card added to Life: ' + cardName);
-  }
+  trello.handleWebhook(request.body);
+
   return {
-    data: {}
+    data: { success: true }
   };
 };

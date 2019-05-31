@@ -8,10 +8,6 @@ import { requestIdPlugin } from './plugins/requestid-plugin';
 import { getSharedSchemas } from './schemas/shared';
 import { rootRoutes, trelloRoutes, telegramRoutes } from './routes';
 
-// for webhook initialization only
-import Bot from '../services/telegram-bot';
-logger.info(Bot + ' initialized');
-
 const app = Fastify({
   logger
 });
@@ -32,5 +28,12 @@ app.setErrorHandler(errorHandler);
 app.register(rootRoutes);
 app.register(trelloRoutes);
 app.register(telegramRoutes);
+
+// for webhook initialization only
+import Bot from '../services/telegram-bot';
+logger.info(Bot + ' initialized');
+
+import Trello from '../services/trello';
+Trello.setWebhook();
 
 export default app;

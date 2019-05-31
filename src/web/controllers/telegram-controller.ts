@@ -20,8 +20,9 @@ export const telegramHookHandler = async request => {
   const chatId = message.chat.id;
 
   telegramBot.sendMessage(chatId, 'it works!');
+  // TODO: remove
   logger.info(JSON.stringify(request.body, null, 4));
   return {
-    data: { ...request.body }
+    data: { success: true }
   };
 };
