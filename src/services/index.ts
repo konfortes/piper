@@ -1,9 +1,19 @@
 import TelegramBot from './telegram-bot';
 import Trello from './trello';
+const config = require('../config');
 
-// TODO: pass webhook params to the method
-interface Webhookable {
-  setWebhook: (any?) => void;
+export interface Webhookable {
+  name: string;
+  setWebhook: (callbackUrl: string) => void;
+  handleWebhook: (data: any) => void;
 }
 
-export const webhookServices: Array<Webhookable> = [TelegramBot, Trello];
+const webhookServices: Array<Webhookable> = [TelegramBot, Trello];
+
+export function setWebhooks() {
+  const basePublicUrl = config.get('publicUrl');
+
+  for (const service of webhookServices) {
+    service.setWebhook(basePublicUrl + `/${service.name}/webhook`);
+  }
+}

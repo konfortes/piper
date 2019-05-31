@@ -17,11 +17,10 @@ export const telegramHookSchema = {
 
 export const telegramHookHandler = async request => {
   const { message } = request.body;
-  const chatId = message.chat.id;
-
-  telegramBot.sendMessage(chatId, 'it works!');
   // TODO: remove
-  logger.info(JSON.stringify(request.body, null, 4));
+  logger.info(JSON.stringify(message, null, 4));
+  telegramBot.handleWebhook(message);
+
   return {
     data: { success: true }
   };

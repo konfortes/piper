@@ -2,27 +2,32 @@ const config = require('../config');
 import axios from 'axios';
 import logger from '../utils/logger';
 import TelegramBot from './telegram-bot';
+import { Webhookable } from 'services';
 
-const BASE_URL = 'https://api.trello.com/1';
-const CALLBACK_URL = config.get('publicUrl') + '/trello/webhook';
+const BASE_API_URL = 'https://api.trello.com/1';
 const LIFE_BOARD_ID = '5cdd4be7a4bbe37af39abd29';
 
 export enum TrelloAction {
   createCard = 'createCard'
 }
 
-class Trello {
+class Trello implements Webhookable {
   constructor(private appKey: string, private token: string) {}
 
-  public async setWebhook() {
-    const url = `${BASE_URL}/tokens/${this.token}/webhooks`;
+  get name() {
+    return 'trello';
+  }
+
+  public async setWebhook(url: string) {
+    const setWebhookUrl = `${BASE_API_URL}/tokens/${this.token}/webhooks`;
     const body = {
       key: this.appKey,
-      callbackURL: CALLBACK_URL,
+      callbackURL: url,
       idModel: LIFE_BOARD_ID,
       description: 'Piper Webhook'
     };
 
+    // TODO: remove
     console.log(
       `curl -X POST -H 'Content-Type: application/json' -d '${JSON.stringify(
         body
@@ -30,10 +35,10 @@ class Trello {
     );
 
     try {
-      await axios.post(url, body);
-      logger.info('treloo webhook was successfully setted');
+      await axios.post(setWebhookUrl, body);
+      logger.info('trello webhook was successfully set');
     } catch (error) {
-      logger.error('error setting Trello webhook: ' + error);
+      logger.error('error setting Trello webhook: ' + error.response.data);
     }
   }
 
@@ -43,6 +48,7 @@ class Trello {
     if (action.type === TrelloAction.createCard) {
       const chatId = '616941509';
       const cardName = action.data.card.name;
+
       TelegramBot.sendMessage(chatId, 'new card added to Life: ' + cardName);
     }
   }
