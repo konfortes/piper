@@ -40,6 +40,11 @@ const config = convict({
         doc: 'api access token',
         default: '',
         env: 'TRELLO_API_TOKEN'
+      },
+      appSecret: {
+        doc: 'app secret',
+        default: '',
+        env: 'TRELLO_APP_SECRET'
       }
     },
     telegram: {
@@ -47,6 +52,11 @@ const config = convict({
         doc: 'the bot API token',
         default: '',
         env: 'TELEGRAM_TOKEN'
+      },
+      apiSecret: {
+        doc: 'secret api token',
+        default: '',
+        env: 'TELEGRAM_API_SECRET'
       }
     }
   }

@@ -5,7 +5,7 @@ const config = require('../config');
 export interface Webhookable {
   name: string;
   setWebhook: (callbackUrl: string) => void;
-  handleWebhook: (data: any) => void;
+  handleWebhook: (data: any, auth: string) => void;
 }
 
 const webhookServices: Array<Webhookable> = [TelegramBot, Trello];
