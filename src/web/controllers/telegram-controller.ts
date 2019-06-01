@@ -16,7 +16,7 @@ export const telegramHookSchema = {
 
 export const telegramHookHandler = async request => {
   const { message } = request.body;
-  const authToken = request.query.auth;
+  const authToken = request.query.secret;
   telegramBot.handleWebhook(message, authToken);
 
   return {

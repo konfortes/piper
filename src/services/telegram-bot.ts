@@ -1,3 +1,4 @@
+import { authorizationError } from './../utils/errors-factory';
 import { Webhookable } from 'services';
 const Telegram = require('node-telegram-bot-api');
 const config = require('../config');
@@ -32,8 +33,8 @@ class TelegramBot implements Webhookable {
   }
 
   private authorizeRequest(secret) {
-    if (token !== config.get('services.telegram.apiSecret')) {
-      throw new Error('error authorizing request');
+    if (secret !== config.get('services.telegram.apiSecret')) {
+      throw authorizationError();
     }
 
     return true;

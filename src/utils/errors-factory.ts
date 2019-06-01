@@ -3,7 +3,7 @@ import HttpStatus from 'http-status-codes';
 // All possible errors codes
 export enum ErrorCode {
   Internal,
-  Authentication,
+  Authorization,
   Validation
 }
 
@@ -25,10 +25,9 @@ export class CustomError extends Error {
   }
 }
 
-// Example for application error
-export const authenticationError = (msg = 'Authentication error') => {
+export const authorizationError = (msg = 'Authorization error') => {
   return new CustomError({
-    errorCode: ErrorCode.Authentication,
+    errorCode: ErrorCode.Authorization,
     msg: msg,
     httpCode: HttpStatus.UNAUTHORIZED
   });

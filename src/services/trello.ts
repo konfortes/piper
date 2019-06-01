@@ -1,3 +1,4 @@
+import { authorizationError } from './../utils/errors-factory';
 const config = require('../config');
 import axios from 'axios';
 import crypto from 'crypto';
@@ -68,7 +69,7 @@ class Trello implements Webhookable {
     var doubleHash = base64Digest(content);
 
     if (doubleHash !== signature) {
-      throw new Error('signature could not be verified');
+      throw authorizationError();
     }
 
     return true;
