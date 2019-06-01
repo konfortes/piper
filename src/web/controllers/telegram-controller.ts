@@ -1,4 +1,3 @@
-import logger from '../../utils/logger';
 import telegramBot from '../../services/telegram-bot';
 
 export const telegramHookSchema = {
@@ -17,9 +16,8 @@ export const telegramHookSchema = {
 
 export const telegramHookHandler = async request => {
   const { message } = request.body;
-  // TODO: remove
-  logger.info(JSON.stringify(message, null, 4));
-  telegramBot.handleWebhook(message);
+  const authToken = request.query.auth;
+  telegramBot.handleWebhook(message, authToken);
 
   return {
     data: { success: true }

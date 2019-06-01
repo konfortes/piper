@@ -1,5 +1,4 @@
 import { Webhookable } from 'services';
-
 const Telegram = require('node-telegram-bot-api');
 const config = require('../config');
 
@@ -14,17 +13,30 @@ class TelegramBot implements Webhookable {
     return 'telegram';
   }
 
-  public setWebhook(callbackUrl: string): void {
+  public setWebhook(url: string): void {
+    const callbackUrl = `${url}?secret=${config.get(
+      'services.telegram.apiSecret'
+    )}`;
     this.bot.setWebHook(callbackUrl);
   }
 
-  public handleWebhook(data: any): void {
+  public handleWebhook(data: any, secret: string): void {
+    this.authorizeRequest(secret);
+
     const chatId = data.chat.id;
     this.bot.sendMessage(chatId, 'got you');
   }
 
   public sendMessage(chatId: string, message: string): void {
     this.bot.sendMessage(chatId, message);
+  }
+
+  private authorizeRequest(secret) {
+    if (token !== config.get('services.telegram.apiSecret')) {
+      throw new Error('error authorizing request');
+    }
+
+    return true;
   }
 }
 

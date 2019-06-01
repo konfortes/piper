@@ -1,5 +1,4 @@
 import trello from './../../services/trello';
-import logger from '../../utils/logger';
 
 export const trelloHookSchema = {
   response: {
@@ -9,8 +8,7 @@ export const trelloHookSchema = {
         data: {
           type: 'object',
           properties: {
-            name: { type: 'string' },
-            version: { type: 'string' }
+            success: { type: 'boolean' }
           }
         }
       }
@@ -20,9 +18,7 @@ export const trelloHookSchema = {
 };
 
 export const trelloHookHandler = async request => {
-  // TODO: remove
-  logger.info('webhook payload: ' + JSON.stringify(request.body, null, 4));
-  trello.handleWebhook(request.body);
+  trello.handleWebhook(request.body, request.headers['x-trello-webhook']);
 
   return {
     data: { success: true }

@@ -2,40 +2,31 @@
 
 ## Integrate services
 
-### API
+### How to use it:
 
-documentation can be found on `/docs`
+set **PUBLIC_URL** in your env. this is the base url for the webhooks.
 
 ### Trello
 
-to register a webhook, run:
+In order for the trello webhook to work, set these env vars:
 
-```bash
-curl -X POST -H "Content-Type: application/json" \
-https://api.trello.com/1/tokens/{APIToken}/webhooks/ \
--d '{
-  "key": "56e1506799c97dea920f7229c75c6c39",
-  "callbackURL": "http://99e80dc0.ngrok.io/trello/webhook",
-  "idModel":"5cdd4be7a4bbe37af39abd29",
-  "description": "Life board hook"
-}'
-```
+- **TRELLO_APP_KEY** (can be found on [http://trello.com/app-key](http://trello.com/app-key))
+- **TRELLO_APP_SECRET** (can be found on the bottom of [http://trello.com/app-key](http://trello.com/app-key))
+- **TRELLO_API_TOKEN** - using the AppKey you can get APIToken: [Authorize](https://trello.com/1/authorize?expiration=30days&name=PiperToken&scope=read,write&response_type=token&key={YourAppKey})
 
-- your AppKey can be found on [http://trello.com/app-key](http://trello.com/app-key).
-- using the AppKey you can get APIToken: browse [Authorize](https://trello.com/1/authorize?expiration=30days&name=PiperToken&scope=read,write&response_type=token&key={YourAppKey})
-- to find board url browse to the board and add .json at the end.
-- set token on you ENV to authorize signature.
-- debugging webhooks curls:
+#### debugging webhooks curls:
 
 ```bash
 curl https://api.trello.com/1/tokens/$TOKEN/webhooks\?key\=56e1506799c97dea920f7229c75c6c39
+
 curl -XDELETE https://api.trello.com/1/tokens/$TOKEN/webhooks/5cf01a9c2f0d3c889d2651e0\?key\=56e1506799c97dea920f7229c75c6c39
 ```
 
 ### Telegram
 
-- create a bot through BotFather
-- The Bot initialization will register the webhook. if you need to register manually - use the token to register webhook:
+in order for the Telegram bot hooks and client to work, set your env with **TELEGRAM_TOKEN** (which can be given by BotFather) and **TELEGRAM_API_SECRET** which is a randomly generated private secret.
+
+#### to manually set a hook:
 
 ```bash
 TOKEN= <YOUR_TOKEN>
@@ -43,8 +34,7 @@ URL= <WEBHOOK_URL>
 curl https://api.telegram.org/bot$TOKEN/setWebhook\?url\=$URL
 ```
 
-- set token in your ENV
-- create ssl certificate:
+#### create ssl certificate:
 
 ```bash
 # Our private cert will be key.pem, keep this file private

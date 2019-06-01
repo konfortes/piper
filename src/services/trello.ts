@@ -1,5 +1,6 @@
 const config = require('../config');
 import axios from 'axios';
+import crypto from 'crypto';
 import logger from '../utils/logger';
 import TelegramBot from './telegram-bot';
 import { Webhookable } from 'services';
@@ -12,13 +13,18 @@ export enum TrelloAction {
 }
 
 class Trello implements Webhookable {
-  constructor(private appKey: string, private token: string) {}
+  private webhookUrl: string;
+
+  constructor(private appKey: string, private token: string) {
+    this.webhookUrl = '';
+  }
 
   get name() {
     return 'trello';
   }
 
   public async setWebhook(url: string) {
+    this.webhookUrl = url;
     const setWebhookUrl = `${BASE_API_URL}/tokens/${this.token}/webhooks`;
     const body = {
       key: this.appKey,
@@ -26,13 +32,6 @@ class Trello implements Webhookable {
       idModel: LIFE_BOARD_ID,
       description: 'Piper Webhook'
     };
-
-    // TODO: remove
-    console.log(
-      `curl -X POST -H 'Content-Type: application/json' -d '${JSON.stringify(
-        body
-      )}' '${url}'`
-    );
 
     try {
       await axios.post(setWebhookUrl, body);
@@ -42,7 +41,9 @@ class Trello implements Webhookable {
     }
   }
 
-  public handleWebhook(data: any): void {
+  public handleWebhook(data: any, signature: string): void {
+    this.validateSignature(data, signature);
+
     const action = data.action;
 
     if (action.type === TrelloAction.createCard) {
@@ -51,6 +52,26 @@ class Trello implements Webhookable {
 
       TelegramBot.sendMessage(chatId, 'new card added to Life: ' + cardName);
     }
+  }
+
+  private validateSignature(data, signature) {
+    const secret = config.get('services.trello.appSecret');
+
+    const base64Digest = s => {
+      return crypto
+        .createHmac('sha1', secret)
+        .update(s)
+        .digest('base64');
+    };
+
+    var content = JSON.stringify(data) + this.webhookUrl;
+    var doubleHash = base64Digest(content);
+
+    if (doubleHash !== signature) {
+      throw new Error('signature could not be verified');
+    }
+
+    return true;
   }
 }
 
