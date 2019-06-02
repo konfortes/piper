@@ -28,7 +28,15 @@ class TelegramBot implements Webhookable {
     this.bot.sendMessage(chatId, 'got you');
   }
 
-  public sendMessage(chatId: string, message: string): void {
+  public updateAccountMaster(message: string) {
+    const accountMasterChatId = config.get(
+      'services.telegram.accountMasterChatId'
+    );
+
+    this.sendMessage(accountMasterChatId, message);
+  }
+
+  private sendMessage(chatId: string, message: string): void {
     this.bot.sendMessage(chatId, message);
   }
 

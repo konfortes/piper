@@ -7,7 +7,6 @@ import TelegramBot from './telegram-bot';
 import { Webhookable } from 'services';
 
 const BASE_API_URL = 'https://api.trello.com/1';
-const LIFE_BOARD_ID = '5cdd4be7a4bbe37af39abd29';
 
 export enum TrelloAction {
   createCard = 'createCard'
@@ -30,7 +29,7 @@ class Trello implements Webhookable {
     const body = {
       key: this.appKey,
       callbackURL: url,
-      idModel: LIFE_BOARD_ID,
+      idModel: config.get('services.trello.webhookModelId'),
       description: 'Piper Webhook'
     };
 
@@ -48,10 +47,9 @@ class Trello implements Webhookable {
     const action = data.action;
 
     if (action.type === TrelloAction.createCard) {
-      const chatId = '616941509';
       const cardName = action.data.card.name;
 
-      TelegramBot.sendMessage(chatId, 'new card added to Life: ' + cardName);
+      TelegramBot.updateAccountMaster('new card added to Life: ' + cardName);
     }
   }
 

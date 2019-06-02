@@ -45,6 +45,11 @@ const config = convict({
         doc: 'app secret',
         default: '',
         env: 'TRELLO_APP_SECRET'
+      },
+      webhookModelId: {
+        doc: 'the id of the model to get hooks for',
+        default: '',
+        env: 'TRELLO_WEBHOOK_MODEL_ID'
       }
     },
     telegram: {
@@ -57,6 +62,11 @@ const config = convict({
         doc: 'secret api token',
         default: '',
         env: 'TELEGRAM_API_SECRET'
+      },
+      accountMasterChatId: {
+        doc: 'the chat id of the master of the account',
+        default: '616941509',
+        env: 'TELEGRAM_ACCOUNT_MASTER_CHAT_ID'
       }
     }
   }
