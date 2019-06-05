@@ -12,15 +12,51 @@ export enum TrelloAction {
   createCard = 'createCard'
 }
 
+interface List {
+  id: string;
+  name: string;
+}
+
+interface Card {
+  id: string;
+  closed: boolean;
+  name: string;
+  due: string;
+}
+
 class Trello implements Webhookable {
   private webhookUrl: string;
 
-  constructor(private appKey: string, private token: string) {
+  constructor(private appKey: string, private token: string, private boardId) {
     this.webhookUrl = '';
   }
 
   get name() {
     return 'trello';
+  }
+
+  public async getLists(): Promise<Array<List>> {
+    let url = `${BASE_API_URL}/boards/${this.boardId}/lists`;
+    url = this.addAuth(url);
+    const response = await axios.get(url);
+
+    return response.data || [];
+  }
+
+  public async getCards(listId: string): Promise<Array<Card>> {
+    let url = `${BASE_API_URL}/boards/${this.boardId}/cards`;
+    url = this.addAuth(url);
+    const response = await axios.get(url);
+    const cards = response.data || [];
+
+    const listCards = cards.filter(card => card.idList === listId);
+    return listCards;
+  }
+
+  public async moveCard(cardId: string, listId: string) {
+    let url = `${BASE_API_URL}/boards/${this.boardId}/cards/cardId`;
+    url = this.addAuth(url);
+    await axios.get(url);
   }
 
   public async setWebhook(url: string) {
@@ -29,7 +65,7 @@ class Trello implements Webhookable {
     const body = {
       key: this.appKey,
       callbackURL: url,
-      idModel: config.get('services.trello.webhookModelId'),
+      idModel: this.boardId,
       description: 'Piper Webhook'
     };
 
@@ -37,7 +73,10 @@ class Trello implements Webhookable {
       await axios.post(setWebhookUrl, body);
       logger.info('trello webhook was successfully set');
     } catch (error) {
-      logger.error('error setting Trello webhook: ' + error.response.data);
+      logger.error(
+        'error setting Trello webhook: ' +
+          JSON.stringify(error.response.data, null, 4)
+      );
     }
   }
 
@@ -72,10 +111,18 @@ class Trello implements Webhookable {
 
     return true;
   }
+
+  private addAuth(url: string): string {
+    const key = config.get('services.trello.appKey');
+    const token = config.get('services.trello.apiToken');
+    return url + `?key=${key}&token=${token}`;
+  }
 }
 
 const appKey = config.get('services.trello.appKey');
 const token = config.get('services.trello.apiToken');
-const trello = new Trello(appKey, token);
+// TODO: rename or use another config
+const boardId = config.get('services.trello.webhookModelId');
+const trello = new Trello(appKey, token, boardId);
 
 export default trello;

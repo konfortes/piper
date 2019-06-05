@@ -8,7 +8,7 @@ import { requestIdPlugin } from './plugins/requestid-plugin';
 import { getSharedSchemas } from './schemas/shared';
 import { rootRoutes, trelloRoutes, telegramRoutes } from './routes';
 import { setWebhooks } from '../services';
-
+import { scheduleJobs } from '../jobs';
 const app = Fastify({
   logger
 });
@@ -31,5 +31,6 @@ app.register(trelloRoutes);
 app.register(telegramRoutes);
 
 setWebhooks();
+scheduleJobs();
 
 export default app;
