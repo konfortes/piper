@@ -1,4 +1,4 @@
-import trello from './../../services/trello';
+import trello from '../../services/trello/trello';
 
 export const trelloHookSchema = {
   response: {

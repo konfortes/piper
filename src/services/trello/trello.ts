@@ -1,10 +1,11 @@
-import { authorizationError } from './../utils/errors-factory';
+import { authorizationError } from '../../utils/errors-factory';
 const config = require('../config');
 import axios from 'axios';
 import crypto from 'crypto';
-import logger from '../utils/logger';
-import TelegramBot from './telegram-bot';
+import logger from '../../utils/logger';
+import TelegramBot from '../telegram-bot';
 import { Webhookable } from 'services';
+import { TrelloClient } from './client';
 
 const BASE_API_URL = 'https://api.trello.com/1';
 
@@ -26,9 +27,11 @@ interface Card {
 
 class Trello implements Webhookable {
   private webhookUrl: string;
+  private client: TrelloClient;
 
   constructor(private appKey: string, private token: string, private boardId) {
     this.webhookUrl = '';
+    this.client = new TrelloClient(this.boardId);
   }
 
   get name() {
@@ -36,29 +39,25 @@ class Trello implements Webhookable {
   }
 
   public async getLists(): Promise<Array<List>> {
-    let url = `${BASE_API_URL}/boards/${this.boardId}/lists`;
-    url = this.addAuth(url);
-    const response = await axios.get(url);
-
-    return response.data || [];
+    return this.client.getLists();
   }
 
   public async getCards(listId: string): Promise<Array<Card>> {
-    let url = `${BASE_API_URL}/boards/${this.boardId}/cards`;
-    url = this.addAuth(url);
-    const response = await axios.get(url);
-    const cards = response.data || [];
+    const cards = await this.client.getCards();
 
     const listCards = cards.filter(card => card.idList === listId);
     return listCards;
   }
 
   public async moveCard(cardId: string, listId: string) {
-    let url = `${BASE_API_URL}/boards/${this.boardId}/cards/cardId`;
-    url = this.addAuth(url);
-    await axios.get(url);
+    const update = {
+      listId
+    };
+
+    this.client.updateCard(cardId, update);
   }
 
+  // TODO: use client
   public async setWebhook(url: string) {
     this.webhookUrl = url;
     const setWebhookUrl = `${BASE_API_URL}/tokens/${this.token}/webhooks`;
@@ -110,12 +109,6 @@ class Trello implements Webhookable {
     }
 
     return true;
-  }
-
-  private addAuth(url: string): string {
-    const key = config.get('services.trello.appKey');
-    const token = config.get('services.trello.apiToken');
-    return url + `?key=${key}&token=${token}`;
   }
 }
 

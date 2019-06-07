@@ -1,5 +1,5 @@
 import TelegramBot from './telegram-bot';
-import Trello from './trello';
+import Trello from './trello/trello';
 const config = require('../config');
 
 export interface Webhookable {
