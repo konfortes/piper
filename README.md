@@ -25,4 +25,5 @@ _Telegram:_ (see instructions on [telegram](./docs/telegram.md))
 
 ### Troubleshooting
 
-- webhooks refuses to be received - revoke token!
+- webhooks refuses to be received - `revoke token!`
+- npm run dev fails with can't execute - `chmod u+x dev-start.sh`
