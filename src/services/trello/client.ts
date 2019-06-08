@@ -19,6 +19,7 @@ export class TrelloClient {
 
   public updateCard(cardId: string, update: any): Promise<any> {
     let url = `${BASE_API_URL}/boards/${this.boardId}/cards/${cardId}`;
+
     url = this.addAuth(url);
 
     for (const obj of Object.entries(update)) {

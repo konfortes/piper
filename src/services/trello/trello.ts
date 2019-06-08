@@ -1,5 +1,5 @@
 import { authorizationError } from '../../utils/errors-factory';
-const config = require('../config');
+const config = require('../../config');
 import axios from 'axios';
 import crypto from 'crypto';
 import logger from '../../utils/logger';
@@ -50,6 +50,7 @@ class Trello implements Webhookable {
   }
 
   public async moveCard(cardId: string, listId: string) {
+    // curl -v -XPUT 'http://api.trello.com/1/boards/5cdd4be7a4bbe37af39abd29/cards/5cfab87efda4d360c4bbe5fd?key=56e1506799c97dea920f7229c75c6c39&token=5fd6b97094e83d1326c19ba309c1ede464cd06c873a2ce4ff7884959023cd156&listId=5cdd4c07867d988415665a29'
     const update = {
       listId
     };
