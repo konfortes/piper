@@ -39,13 +39,9 @@ export class TrelloClient {
     url: string,
     data: any = {}
   ): Promise<any> {
-    console.log('RONEN');
-    console.log(method);
-    console.log(url);
     let response = {};
     try {
       response = await axios.request({ method, url, data });
-      console.log(JSON.stringify(response, null, 4));
     } catch (error) {
       console.error(error);
     }
