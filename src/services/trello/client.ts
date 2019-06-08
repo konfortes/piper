@@ -18,13 +18,11 @@ export class TrelloClient {
   }
 
   public updateCard(cardId: string, update: any): Promise<any> {
-    let url = `${BASE_API_URL}/boards/${this.boardId}/cards/${cardId}`;
+    // TODO: add support for multi attrs update
+    let url = `${BASE_API_URL}/cards/${cardId}/${Object.keys(update)[0]}`;
 
     url = this.addAuth(url);
-
-    for (const obj of Object.entries(update)) {
-      url += `&${obj[0]}=${obj[1]}`;
-    }
+    url += `&value=${Object.values(update)}`;
 
     return this.request('put', url);
   }
@@ -41,7 +39,17 @@ export class TrelloClient {
     url: string,
     data: any = {}
   ): Promise<any> {
-    return axios.request({ method, url, data });
+    console.log('RONEN');
+    console.log(method);
+    console.log(url);
+    let response = {};
+    try {
+      response = await axios.request({ method, url, data });
+      console.log(JSON.stringify(response, null, 4));
+    } catch (error) {
+      console.error(error);
+    }
+    return response;
   }
 
   private addAuth(url: string): string {

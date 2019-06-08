@@ -1,4 +1,4 @@
-import Trello from './trello';
+// import Trello from './trello';
 
 describe('Trello Service', () => {
   //   describe('#getLists', async () => {
@@ -6,7 +6,6 @@ describe('Trello Service', () => {
   //       return await expect(Trello.getLists()).resolves.toEqual([]);
   //     });
   //   });
-
   //   describe('#getCards', async () => {
   //     it('return cards', async () => {
   //       return await expect(
@@ -14,12 +13,11 @@ describe('Trello Service', () => {
   //       ).resolves.toEqual([]);
   //     });
   //   });
-
-  describe('#moveCard', async () => {
-    it(`updates the card's idList attribute`, async () => {
-      return await expect(
-        Trello.moveCard('5cfab87efda4d360c4bbe5fd', '5cdd4c07867d988415665a29')
-      ).resolves.toEqual([]);
-    });
-  });
+  // describe('#moveCard', async () => {
+  //   it(`updates the card's idList attribute`, async () => {
+  //     return await expect(
+  //       Trello.moveCard('5cfab87efda4d360c4bbe5fd', '5cdd4c07867d988415665a29')
+  //     ).resolves.toEqual([]);
+  //   });
+  // });
 });
