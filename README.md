@@ -2,6 +2,8 @@
 
 ## Integrate services
 
+This repo is configured to automatically trigger Heroku deploy on master push
+
 ### How to run
 
 set your env with
