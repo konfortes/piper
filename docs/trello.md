@@ -8,10 +8,17 @@ In order for the trello webhooks and client to work, set your app env with the v
 - **TRELLO_WEBHOOK_MODEL_ID:** The id of the model for which you want to receive the hooks.  
   \* To get the model id - browse to the board view on the web and add _.json_ at the end.
 
-#### debugging webhooks curls:
+## debugging webhooks curls
+
+Get webhook for specific app:
 
 ```bash
-curl https://api.trello.com/1/tokens/$TOKEN/webhooks\?key\=56e1506799c97dea920f7229c75c6c39
+curl https://api.trello.com/1/tokens/$TRELLO_API_TOKEN/webhooks\?key\=$TRELLO_APP_KEY
+```
 
-curl -XDELETE https://api.trello.com/1/tokens/$TOKEN/webhooks/5cf01a9c2f0d3c889d2651e0\?key\=56e1506799c97dea920f7229c75c6c39
+Delete webhook
+
+```bash
+curl -X DELETE https://api.trello.com/1/tokens/$TRELLO_API_TOKEN/webhooks/<THE_WEBHOOK_ID>\?key\=$TRELLO_APP_KEY
+
 ```
