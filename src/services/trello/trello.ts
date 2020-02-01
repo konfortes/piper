@@ -85,9 +85,11 @@ class Trello implements Webhookable {
     const action = data.action;
 
     if (action.type === TrelloAction.createCard) {
-      const cardName = action.data.card.name;
+      const cardShortURL = action.data.card.shortUrl;
 
-      TelegramBot.updateAccountMaster('new card added to Life: ' + cardName);
+      TelegramBot.updateAccountMaster(
+        'new card added to Life: ' + cardShortURL
+      );
     }
   }
 
